@@ -172,7 +172,7 @@ export default function Command() {
   return (
     <List
       onSearchTextChange={setSearchText}
-      searchBarPlaceholder="输入颜色值 (例如: #fff, rgb(255,0,0))"
+      searchBarPlaceholder="Enter color value (e.g., #fff, rgb(255,0,0))"
       isShowingDetail
     >
       {colorItems.map(item => (
