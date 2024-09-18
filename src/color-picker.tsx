@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { List, ActionPanel, Action, Color, Icon, showToast, Toast, Clipboard } from '@raycast/api'
+import { List, ActionPanel, Action } from '@raycast/api'
 import { colord, extend } from 'colord'
 import cmykPlugin from 'colord/plugins/cmyk'
 import labPlugin from 'colord/plugins/lab'
@@ -173,6 +173,7 @@ export default function Command() {
     <List
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="输入颜色值 (例如: #fff, rgb(255,0,0))"
+      isShowingDetail
     >
       {colorItems.map(item => (
         <ColorListItem key={item.format} item={item} hex={colorItems[0].value} />
@@ -186,15 +187,17 @@ function ColorListItem({ item, hex }: { item: ColorItem; hex: string }) {
     <List.Item
       title={item.format}
       subtitle={item.value}
-      accessories={[
-        {
-          icon: { source: Icon.Circle, tintColor: hex }
-        }
-      ]}
+      detail={
+        <List.Item.Detail
+          markdown={`![${hex}](http://localhost:3000/api/colorpng?raycast-width=500&raycast-height=500&c=${hex.replace('#', '')})`}
+        />
+      }
       actions={
         <ActionPanel>
+          <Action.CopyToClipboard title="Copy" content={item.value} />
           <Action.OpenInBrowser
             title="Open in JustColorPicker"
+            shortcut={{ modifiers: ['cmd', 'shift'], key: 'enter' }}
             url={`http://localhost:3000/en?c=${encodeURIComponent(hex)}`}
           />
         </ActionPanel>
